@@ -10,3 +10,7 @@ export interface Containerable {
     borderStyle: string
     zIndex: number
 }
+
+export type State = {
+    [key:string]:any
+}

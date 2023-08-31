@@ -31,9 +31,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ Canvas)
 /* harmony export */ });
 class Canvas {
-    constructor(parent, _components = []) {
+    constructor(parent, _components = [], _state = {}) {
         this.parent = parent;
         this._components = _components;
+        this._state = _state;
         this.parent.innerHTML = '';
         this.parent.id = 'canvas';
         const newStyle = {
@@ -47,6 +48,13 @@ class Canvas {
             margin: 'auto'
         };
         Object.assign(this.parent.style, newStyle);
+    }
+    get state() {
+        return this._state;
+    }
+    set state(value) {
+        this._state = Object.assign(Object.assign({}, this.state), value);
+        this.rerender();
     }
     get components() {
         return this._components;
@@ -63,10 +71,31 @@ class Canvas {
             this.buildComponent(component);
         }
     }
+    rerender() {
+        for (const component of this.components) {
+            let div = document.getElementById(component.id);
+            if (this.injectContent(component, div)) {
+                this.buildComponent(component);
+            }
+        }
+    }
+    injectContent(component, div) {
+        div.innerHTML = component.content;
+        let changeState = false;
+        let key;
+        for (key in this.state) {
+            if (div.innerHTML.includes(`{{ ${key} }}`)) {
+                div.innerHTML = div.innerHTML.split(`{{ ${key} }}`).join(this.state[key]);
+                changeState = true;
+            }
+        }
+        return changeState;
+    }
     buildComponent(component) {
         let div = this.initializeComponentDiv(component);
         this.buildContainerShape(component, div);
         this.placeComponent(component, div);
+        this.injectContent(component, div);
         this.parent.append(div);
     }
     initializeComponentDiv(component) {
@@ -488,18 +517,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Widget__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 
 const canvas = new _Widget__WEBPACK_IMPORTED_MODULE_0__.Canvas(document.body);
+canvas.state = { firstName: 'Brian', city: 'Chicago' };
 console.log(canvas);
 const myComponent = new _Widget__WEBPACK_IMPORTED_MODULE_0__.Component();
+myComponent.content = '<button>Hello {{ firstName }} from {{ city }}</button>';
 canvas.addComponent(myComponent);
 // Create a new component with a RightLeaningContainer Shape
 const rightComponent = new _Widget__WEBPACK_IMPORTED_MODULE_0__.Component();
 rightComponent.shape = new _Widget__WEBPACK_IMPORTED_MODULE_0__.RightLeaningContainer();
-rightComponent.locationLeft = 6;
+rightComponent.locationLeft = 2;
 rightComponent.locationTop = 6;
 rightComponent.width = 3;
 rightComponent.height = 3;
+rightComponent.shape.backgroundColor = 'blue';
+rightComponent.shape.borderWidth = '5px';
 rightComponent.shape.zIndex = 1;
+rightComponent.content = '<img src="https://picsum.photos/100" /><p>{{ firstName }}</p>';
 canvas.addComponent(rightComponent);
+canvas.state = { className: 'Kekambas' };
+console.log(canvas.state);
 // Create a new component with a CircleContainer Shape
 const circleComponent = new _Widget__WEBPACK_IMPORTED_MODULE_0__.Component();
 circleComponent.shape = new _Widget__WEBPACK_IMPORTED_MODULE_0__.CircleContainer();
@@ -507,7 +543,10 @@ circleComponent.locationLeft = 4;
 circleComponent.locationTop = 5;
 circleComponent.height = 4;
 circleComponent.width = 4;
+circleComponent.shape.backgroundColor = 'red';
+circleComponent.content = '<h4>{{ className }}</h4>';
 canvas.addComponent(circleComponent);
+canvas.state = { city: 'San Francisco' };
 
 })();
 
