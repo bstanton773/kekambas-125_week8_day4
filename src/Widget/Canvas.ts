@@ -15,7 +15,8 @@ export default class Canvas{
             height: '100vh',
             columnGap: '5px',
             rowGap: '5px',
-            aspectRatio: '1 / 1'
+            aspectRatio: '1 / 1',
+            margin: 'auto'
         }
         Object.assign(this.parent.style, newStyle)
     }

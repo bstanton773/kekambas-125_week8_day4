@@ -8,10 +8,15 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Canvas: () => (/* reexport safe */ _Canvas__WEBPACK_IMPORTED_MODULE_0__["default"]),
-/* harmony export */   Component: () => (/* reexport safe */ _Component__WEBPACK_IMPORTED_MODULE_1__["default"])
+/* harmony export */   CircleContainer: () => (/* reexport safe */ _containers__WEBPACK_IMPORTED_MODULE_2__.CircleContainer),
+/* harmony export */   Component: () => (/* reexport safe */ _Component__WEBPACK_IMPORTED_MODULE_1__["default"]),
+/* harmony export */   LeftLeaningContainer: () => (/* reexport safe */ _containers__WEBPACK_IMPORTED_MODULE_2__.LeftLeaningContainer),
+/* harmony export */   RightLeaningContainer: () => (/* reexport safe */ _containers__WEBPACK_IMPORTED_MODULE_2__.RightLeaningContainer)
 /* harmony export */ });
 /* harmony import */ var _Canvas__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var _containers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
+
 
 
 
@@ -38,7 +43,8 @@ class Canvas {
             height: '100vh',
             columnGap: '5px',
             rowGap: '5px',
-            aspectRatio: '1 / 1'
+            aspectRatio: '1 / 1',
+            margin: 'auto'
         };
         Object.assign(this.parent.style, newStyle);
     }
@@ -485,6 +491,23 @@ const canvas = new _Widget__WEBPACK_IMPORTED_MODULE_0__.Canvas(document.body);
 console.log(canvas);
 const myComponent = new _Widget__WEBPACK_IMPORTED_MODULE_0__.Component();
 canvas.addComponent(myComponent);
+// Create a new component with a RightLeaningContainer Shape
+const rightComponent = new _Widget__WEBPACK_IMPORTED_MODULE_0__.Component();
+rightComponent.shape = new _Widget__WEBPACK_IMPORTED_MODULE_0__.RightLeaningContainer();
+rightComponent.locationLeft = 6;
+rightComponent.locationTop = 6;
+rightComponent.width = 3;
+rightComponent.height = 3;
+rightComponent.shape.zIndex = 1;
+canvas.addComponent(rightComponent);
+// Create a new component with a CircleContainer Shape
+const circleComponent = new _Widget__WEBPACK_IMPORTED_MODULE_0__.Component();
+circleComponent.shape = new _Widget__WEBPACK_IMPORTED_MODULE_0__.CircleContainer();
+circleComponent.locationLeft = 4;
+circleComponent.locationTop = 5;
+circleComponent.height = 4;
+circleComponent.width = 4;
+canvas.addComponent(circleComponent);
 
 })();
 
